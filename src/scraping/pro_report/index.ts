@@ -10,7 +10,7 @@ export default class ProReport {
   public url = 'https://www.actionnetwork.com/sharp-report';
 
   public openBrowser = async () => {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     let i = 0;
     while (i < 5) {
