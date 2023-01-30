@@ -13,14 +13,19 @@ const getReports = async (filter: any) => {
 };
 
 const updateProReport = async (data: any) => {
-  console.log(data)
-  const value = await repository.findOneBy({matchId: data.matchId})
+  const value = await repository.findOneBy({
+    matchId: data.matchId,
+    league: data.league,
+    filter: data.filter,
+  });
   if (value && value.bet !== data.bet) {
-    value.bet = data.betData;
+    console.log('*** updating old data *** ', data);
+    value.bet = data.bet;
     await repository.save(value);
   } else if (!value) {
-    await repository.save(data)
+    console.log('*** saving new data *** ', data);
+    await repository.save(data);
   }
-}
+};
 
 export default { getReports, updateProReport };

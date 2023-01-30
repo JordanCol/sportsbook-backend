@@ -1,52 +1,30 @@
-import NFL from "./odd/nfl"
-import NCAAF from "./odd/ncaaf";
-import NBA from "./odd/nba";
-import NCAAB from "./odd/ncaab";
-import NHL from "./odd/nhl";
-import SOCCER from "./odd/soccer";
-import WNBA from "./odd/wnba";
-import UFC from "./odd/ufc";
-import NASCAR from "./odd/nascar";
-import ATP from "./odd/atp";
-import WTA from "./odd/wta";
-import ProReportNFL from './pro_report/nfl';
-import ProReportNBA from './pro_report/nba'
-import ProReportNCAAB from './pro_report/ncaab'
-import ProReportNHL from './pro_report/nhl'
-import { sleep } from "../utils/timeout";
-
-import Bet from "./bet";
-
-const nfl= new NFL();
-const ncaaf = new NCAAF();
-const nba = new NBA();
-const ncaab = new NCAAB();
-const nhl = new NHL();
-const soccer = new SOCCER();
-const wnba = new WNBA();
-const ufc = new UFC();
-const nascar = new NASCAR();
-const atp = new ATP();
-const wta = new WTA();
-
-const proReportNfl = new ProReportNFL();
-const proReportNba = new ProReportNBA();
-const proReportNcaab = new ProReportNCAAB();
-const proReportNhl = new ProReportNHL();
+import { sleep } from '../utils/timeout';
+import Bet from './bet';
+import ProReport from './pro_report';
 
 const bet = new Bet();
+const proReport = new ProReport();
 
 export async function startScraping() {
-    while (true) {
-        try {
-            console.log('------------------------------------- scraping started -------------------------------------')
-            await bet.start();
-            console.log('------------------------------------- scraping ended -------------------------------------')
-        } catch (error) {
-            console.log('error = ', error)
-        }
-
-        await sleep(600000) // delay for 10 minutes
+  while (true) {
+    try {
+      console.log('~~~ scraping bet started ~~~');
+      await bet.start();
+      console.log('~~~ scraping bet ended ~~~');
+    } catch (error) {
+      await bet.stop();
+      console.log('error in bet = ', error);
     }
-    
+
+    try {
+      console.log('~~~ scraping pro report started ~~~');
+      await proReport.start();
+      console.log('~~~ scraping pro report ended ~~~');
+    } catch (error) {
+      await proReport.stop();
+      console.log('error = in pro report ', error);
+    }
+
+    await sleep(300000); // delay for 5 minutes
+  }
 }
