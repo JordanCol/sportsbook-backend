@@ -1,33 +1,13 @@
-import puppeteer, { Browser, Page } from 'puppeteer';
 import { sleep } from '../../utils/timeout';
 import betService from '../../services/bet.service';
+import AbstractScraper from '../abstract_scraper';
 
-export default class Bet {
-  private browser: Browser;
-  private page: Page;
+export default class Bet extends AbstractScraper {
   private league: string;
   private filter: string;
   public url = 'https://www.actionnetwork.com/odds';
 
-  public openBrowser = async () => {
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
-    let i = 0;
-    while (i < 5) {
-      try {
-        await page.setDefaultNavigationTimeout(120000);
-        await page.goto(this.url, { waitUntil: 'networkidle2' });
-        await page.waitForNetworkIdle();
-        this.browser = browser;
-        this.page = page;
-        break;
-      } catch (error) {
-        i++;
-      }
-    }
-  };
-
-  public getBetData = async () => {
+  public async getData() {
     const leagues = [
       'nfl',
       'ncaaf',
@@ -82,9 +62,9 @@ export default class Bet {
 
     await this.page.close();
     await this.browser.close();
-  };
+  }
 
-  public parseData = async () => {
+  private async parseData() {
     let betDateXpath = '//span[@class="day-nav__display"]';
     const [betDateElement] = await this.page.$x(betDateXpath);
     const betDate = betDateElement
@@ -829,15 +809,5 @@ export default class Bet {
         });
       }
     }
-  };
-
-  public start = async () => {
-    await this.openBrowser();
-    await this.getBetData();
-  };
-
-  public stop = async () => {
-    await this.page.close();
-    await this.browser.close();
-  };
+  }
 }

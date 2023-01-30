@@ -1,33 +1,13 @@
-import puppeteer, { Browser, Page } from 'puppeteer';
 import { sleep } from '../../utils/timeout';
 import proReportService from '../../services/pro_report.service';
+import AbstractScraper from '../abstract_scraper';
 
-export default class ProReport {
-  private browser: Browser;
-  private page: Page;
+export default class ProReport extends AbstractScraper {
   private league: string;
   private filter: string;
   public url = 'https://www.actionnetwork.com/sharp-report';
 
-  public openBrowser = async () => {
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
-    let i = 0;
-    while (i < 5) {
-      try {
-        await page.setDefaultNavigationTimeout(120000);
-        await page.goto(this.url, { waitUntil: 'networkidle2' });
-        await page.waitForNetworkIdle();
-        this.browser = browser;
-        this.page = page;
-        break;
-      } catch (error) {
-        i++;
-      }
-    }
-  };
-
-  public getProReportData = async () => {
+  public async getData() {
     const leagues = ['nfl', 'ncaaf', 'nba', 'ncaab', 'nhl', 'mlb'];
     const leagueSelector =
       'div.odds-tools-sub-nav__primary-filters > div:nth-child(1) > select';
@@ -70,9 +50,9 @@ export default class ProReport {
 
     await this.page.close();
     await this.browser.close();
-  };
+  }
 
-  public parseData = async () => {
+  private async parseData() {
     let betDateXpath = '//span[@class="day-nav__display"]';
     const [betDateElement] = await this.page.$x(betDateXpath);
     const betDate = betDateElement
@@ -243,15 +223,5 @@ export default class ProReport {
         });
       }
     }
-  };
-
-  public start = async () => {
-    await this.openBrowser();
-    await this.getProReportData();
-  };
-
-  public stop = async () => {
-    await this.page.close();
-    await this.browser.close();
-  };
+  }
 }
