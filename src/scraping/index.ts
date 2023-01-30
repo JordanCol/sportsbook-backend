@@ -15,7 +15,7 @@ import ProReportNCAAB from './pro_report/ncaab'
 import ProReportNHL from './pro_report/nhl'
 import { sleep } from "../utils/timeout";
 
-import Scraper from "./scraper";
+import Bet from "./bet";
 
 const nfl= new NFL();
 const ncaaf = new NCAAF();
@@ -34,34 +34,19 @@ const proReportNba = new ProReportNBA();
 const proReportNcaab = new ProReportNCAAB();
 const proReportNhl = new ProReportNHL();
 
-const scraper = new Scraper();
+const bet = new Bet();
 
 export async function startScraping() {
-    // while (true) {
-    //     try {
-    //         console.log('------------------------------------- scraping started -------------------------------------')
-    //         await nfl.start();
-    //         await ncaaf.start();
-    //         await nba.start();
-    //         await ncaab.start();
-    //         await nhl.start();
-            // await soccer.start();
-    //         await wnba.start();
-    //         await ufc.start();
-    //         await nascar.start();
-    //         await atp.start();
-    //         await wta.start();
-    
-    //         await proReportNfl.start();
-    //         await proReportNba.start();
-    //         await proReportNcaab.start();
-    //         await proReportNhl.start();
-    //         console.log('------------------------------------- scraping ended -------------------------------------')
-    //     } catch (error) {
-    //         console.log('error = ', error)
-    //     }
+    while (true) {
+        try {
+            console.log('------------------------------------- scraping started -------------------------------------')
+            await bet.start();
+            console.log('------------------------------------- scraping ended -------------------------------------')
+        } catch (error) {
+            console.log('error = ', error)
+        }
 
-    //     await sleep(600000) // delay for 10 minutes
-    // }
-    await scraper.start();
+        await sleep(600000) // delay for 10 minutes
+    }
+    
 }

@@ -2,7 +2,7 @@ import puppeteer, { Browser, Page } from "puppeteer";
 import { sleep } from "../utils/timeout";
 import betService from "../services/bet.service";
 
-export default class Scraper {
+export default class Bet {
     private browser: Browser;
     private page: Page;
     private league: string;
