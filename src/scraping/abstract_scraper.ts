@@ -8,7 +8,7 @@ export default abstract class AbstractScraper {
   abstract getData(): void;
 
   public async openBrowser() {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     let i = 0;
     while (i < 5) {
