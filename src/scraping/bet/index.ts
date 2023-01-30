@@ -31,7 +31,6 @@ export default class Bet extends AbstractScraper {
     for (let i = 0; i < leagues.length; i++) {
       const league = leagues[i];
       await this.page.select(leagueSelector, league);
-      await this.page.waitForNetworkIdle();
       this.league = league;
 
       let k = 0;
@@ -39,7 +38,6 @@ export default class Bet extends AbstractScraper {
         for (let j = 0; j < filters.length; j++) {
           const filter = filters[j];
           await this.page.select(filterSelector, filter);
-          await this.page.waitForNetworkIdle();
           this.filter = filter;
           console.log('fetched bet data');
           await this.parseData();
